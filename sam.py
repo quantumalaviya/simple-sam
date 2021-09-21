@@ -12,7 +12,7 @@ class SAM():
         self.e_ws = []
         grad_norm = tf.linalg.global_norm(gradients)
         for i in range(len(trainable_variables)):
-            e_w = gradients[i] * self.rho / (grad_norm + 1e-12)
+            e_w = tf.math.scalar_mul(rho, gradients[i]) / (grad_norm + eps)
             trainable_variables[i].assign_add(e_w)
             self.e_ws.append(e_w)
 
@@ -49,7 +49,7 @@ def sam_train_step(self, data, rho=0.05, eps=1e-12):
     e_ws = []
     grad_norm = tf.linalg.global_norm(gradients)
     for i in range(len(trainable_vars)):
-        e_w = gradients[i] * rho / (grad_norm + eps)
+        e_w = tf.math.scalar_mul(rho, gradients[i]) / (grad_norm + eps)
         trainable_vars[i].assign_add(e_w)
         e_ws.append(e_w)
 
